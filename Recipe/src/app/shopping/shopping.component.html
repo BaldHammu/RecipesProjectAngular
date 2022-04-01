@@ -1,0 +1,17 @@
+<div class="container">
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-primary" [routerLink]="[hakuna? '/compras' : 'editar']" (click)="editando()">Adicionar Ingredientes</button>
+        <router-outlet></router-outlet> 
+        <hr>
+        <ul class="list-group">
+            <a class="list-group-item" 
+            style="cursor: pointer;"
+            *ngFor="let ingrediente of ingredientes;let id = index"
+            (click)="onEditItem(id)">
+            {{ingrediente.nome}} ({{ingrediente.quantia}})
+        </a>
+        </ul>
+    </div>
+</div>
+</div>
