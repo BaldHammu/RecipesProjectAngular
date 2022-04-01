@@ -1,0 +1,2 @@
+# RecipesProjectAngular
+Learning project
