@@ -1,19 +1,23 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { AuthService, AuthResponse } from "../services/Auth/auth.service";
-import { Observable } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { Router } from "@angular/router";
+import { SharedAlertComponent } from "../shared/alert/alert.component";
+import { PlaceholderDirective } from "../shared/placeholder/placeholder.directive";
 
 @Component({
     selector: 'app-auth',
     templateUrl:'./auth.component.html',
 })
-export class AuthComponent implements OnInit{
+export class AuthComponent implements OnInit,OnDestroy{
     authForm: FormGroup 
     erro:string = null;
     modoLogin = true;
     isLoading = false;
-    constructor( private auth:AuthService , private router:Router){}
+    private newSub:Subscription;
+    @ViewChild(PlaceholderDirective,{static:false}) alertHost:PlaceholderDirective;
+    constructor( private auth:AuthService , private router:Router, private ComponentFactoryResolver:ComponentFactoryResolver){}
     mudaModo(){
         this.modoLogin = !this.modoLogin   
     }
@@ -43,8 +47,21 @@ export class AuthComponent implements OnInit{
             this.router.navigate(['/receitas'])
             }, error=>{
             this.erro = error.error.error.message;
+            this.showErrorAlert(error.error.error.message);
             this.isLoading = false;
             })
         this.authForm.reset();
     }
+    private showErrorAlert(something:string){
+        const hostViewContainerRef =  this.alertHost.viewContainerRef;
+        hostViewContainerRef.clear()
+        const compRef = hostViewContainerRef.createComponent(SharedAlertComponent);
+        compRef.instance.mensagem = something;
+        this.newSub = compRef.instance.fechar.subscribe(()=>{
+            hostViewContainerRef.clear();
+        })
+    }
+    ngOnDestroy(): void {
+        this.newSub.unsubscribe();
+    }   
 }

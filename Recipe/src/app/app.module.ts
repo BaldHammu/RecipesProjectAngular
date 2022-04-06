@@ -18,6 +18,7 @@ import { AuthComponent } from './Auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading.component';
 import { AuthInterceptorService } from './services/Auth/auth-interceptor.service';
 import { SharedAlertComponent } from './shared/alert/alert.component';
+import { PlaceholderDirective } from './shared/placeholder/placeholder.directive';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,8 @@ import { SharedAlertComponent } from './shared/alert/alert.component';
     AuthComponent,
     LoadingSpinnerComponent,
     SharedAlertComponent,
+    PlaceholderDirective
+   
   ],
   imports: [
     ReactiveFormsModule,
@@ -46,6 +49,9 @@ import { SharedAlertComponent } from './shared/alert/alert.component';
     provide: HTTP_INTERCEPTORS,
     useClass:AuthInterceptorService,
     multi:true}],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[
+    SharedAlertComponent,
+  ]
 })
 export class AppModule { }

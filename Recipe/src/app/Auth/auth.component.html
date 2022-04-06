@@ -6,7 +6,12 @@
 <!--         <div class="alert alert-danger" *ngIf="erro">
             <p>{{erro}}</p>
         </div>  -->
-        <app-alert [mensagem]="erro" *ngIf="erro" (fechar)="fechaErro($event)"></app-alert>
+<!--         <app-alert 
+        [mensagem]="erro" 
+        *ngIf="erro" 
+        (fechar)="fechaErro($event)"
+        ></app-alert> -->
+        <ng-template appPlaceholder></ng-template>
         <form [formGroup]="authForm" (ngSubmit)="fullSend()" *ngIf="!isLoading">
             <div class="form-group">
                 <label for="email">E-mail</label>
