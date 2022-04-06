@@ -24,6 +24,10 @@ export class AuthComponent implements OnInit{
         'senha': new FormControl(null,[Validators.required,Validators.minLength(6)]),
     })
     }
+    fechaErro(){
+        this.erro = null;
+        console.log(this.erro);
+    }
     fullSend(){
         let obs:Observable<AuthResponse>;
         if (!this.authForm.valid) return;

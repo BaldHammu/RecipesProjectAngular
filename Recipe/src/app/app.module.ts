@@ -17,6 +17,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { AuthComponent } from './Auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading.component';
 import { AuthInterceptorService } from './services/Auth/auth-interceptor.service';
+import { SharedAlertComponent } from './shared/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AuthInterceptorService } from './services/Auth/auth-interceptor.service
     NodetailsComponent,
     AuthComponent,
     LoadingSpinnerComponent,
+    SharedAlertComponent,
   ],
   imports: [
     ReactiveFormsModule,
