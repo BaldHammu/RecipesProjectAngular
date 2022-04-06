@@ -11,7 +11,7 @@ import { Recipe } from '../recipe.model';
   styleUrls: ['./recipe-detail.component.scss']
 })
 export class RecipeDetailComponent implements OnInit, OnDestroy{
-  receita:Recipe={descricao:'',nome:'',imagePath:'',ingredientes:[]};
+  receita:Recipe;
   subscription:Subscription;
   constructor(public RecipeService:RecipeService, public shoppingService:ShoppingService, public route:ActivatedRoute, public router:Router) {}
 
@@ -19,7 +19,10 @@ export class RecipeDetailComponent implements OnInit, OnDestroy{
     this.subscription = this.route.data
     .subscribe(
       (data:Data)=>{
-        this.receita = data['receita'];
+        this.receita = data[0].filter(res=>{
+          return res.nome===decodeURI(this.router.url.split('/')[2]);
+        });
+        console.log(this.receita);
       }
     )
   }

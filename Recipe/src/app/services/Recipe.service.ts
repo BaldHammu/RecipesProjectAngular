@@ -7,20 +7,9 @@ import { ingrediente } from "../shared/ingredientes.model";
 
 export class RecipeService{
     receitasMudaram = new Subject<Recipe[]>();
-   private recipes: Recipe[]=[
-        new Recipe(
-            'Hamburger',
-            'Continuação dos testes',
-            'https://th.bing.com/th/id/OIP.XHRVZdv7k6lnFcxdA5cGtwHaHa?pid=ImgDet&rs=1',
-            [
-                new ingrediente('Pão',2),
-                new ingrediente('Picles',5),
-                new ingrediente('Secret Sauce',1),
-                new ingrediente('Bacon',5),
-                new ingrediente('Queijo',2),
-                new ingrediente('Ovo',1),
-            ]),
-      ];
+    duplicado = false;
+   private recipes: Recipe[]=[];
+   temBolo = false;
       getRecipes(){
           return this.recipes.slice()
       }
@@ -29,22 +18,36 @@ export class RecipeService{
           return receita;
       }
       adicionaReceita(something:Recipe){
+          for (let receitas in this.recipes){
+              if(something.nome === this.recipes[receitas].nome){
+                  alert('Nome Duplicado!');
+                  this.duplicado=true;
+              }
+          }
+          if (this.duplicado===false){
           this.recipes.push(something);
-          this.receitasMudaram.next(this.recipes.slice());
-          console.log(this.recipes)
+          this.receitasMudaram.next(this.recipes.slice());}
+          this.duplicado=false;
       }
       removerIngrediente(i){
           this.recipes[0].ingredientes.splice(i,1);
           console.log(this.recipes);
       }
       editaReceita(receitaOriginal:Recipe,novaReceita:Recipe){
-        const indice = this.recipes.indexOf(receitaOriginal);
+        const indice = this.recipes.findIndex(x=>x.nome===receitaOriginal.nome);
+        console.log(this.recipes)
+        console.log('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas/'+indice+'.json')
         this.recipes[indice] = novaReceita;
         this.receitasMudaram.next(this.recipes.slice());
       }
       deletarReceita(receita:Recipe){
           const indice = this.recipes.indexOf(receita);
           this.recipes.splice(indice,1);
+          this.receitasMudaram.next(this.recipes.slice());
+      }
+      insereReceitas(receitas:Recipe[]){
+          this.temBolo = true;
+          this.recipes = receitas;
           this.receitasMudaram.next(this.recipes.slice());
       }
 

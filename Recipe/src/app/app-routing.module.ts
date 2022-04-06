@@ -7,13 +7,15 @@ import { RecipeEditComponent } from "./recipes/recipe-edit/recipe-edit.component
 import { ShoppingListEditComponent } from "./shopping/shopping-list-edit/shopping-list-edit.component";
 import { NodetailsComponent } from "./recipes/nodetails/nodetails.component";
 import { receitaResolver } from "./services/recipe-resolver.service";
+import { AuthComponent } from "./Auth/auth.component";
+import { AuthGuard } from "./services/Auth/auth.guard";
 
 const routes:Routes=[
     {
-        path:'', redirectTo: '/receitas', pathMatch: 'full'
+        path:'', redirectTo: '/login', pathMatch: 'full'
     },
     {
-        path: 'receitas', component: RecipesComponent, children:[
+        path: 'receitas',canActivate:[AuthGuard], component: RecipesComponent, children:[
             {
                 path: '', component: NodetailsComponent,
             },
@@ -21,10 +23,10 @@ const routes:Routes=[
                 path: 'nova', component: RecipeEditComponent, 
             },
             {
-                path: 'detalhes/:nome', component: RecipeDetailComponent, resolve:{receita:receitaResolver},
+                path: ':nome', component: RecipeDetailComponent, resolve:[receitaResolver],
             },  
             {
-                path: 'detalhes/:nome/editar', component: RecipeEditComponent, resolve:{receita:receitaResolver},
+                path: ':nome/editar', component: RecipeEditComponent, resolve:[receitaResolver],
             },
             {
                 path:'editar', component: RecipeEditComponent,
@@ -38,6 +40,9 @@ const routes:Routes=[
             },
         ],
     },
+    {
+        path: 'login', component:AuthComponent,
+    }
 ]
 
 @NgModule({

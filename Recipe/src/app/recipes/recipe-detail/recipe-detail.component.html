@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-xs-12">
-        <img [src]="receita.imagePath" alt="" class="img-responsive" style="max-height: 300px;">
+        <img [src]="receita[0].imagePath" alt="" class="img-responsive" style="max-height: 300px;">
 
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <h1>{{receita.nome}}</h1>
+        <h1>{{receita[0].nome}}</h1>
     </div>
 </div>
 <div class="row">
@@ -16,8 +16,8 @@
                 Gerenciar receitas <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a (click)="shoppingService.adicionaIngredient(this.receita.ingredientes)" >Enviar para a lista de compras</a>
-                    <a [routerLink]="['../',receita.nome,'editar']">Editar Receita</a>
+                <li><a (click)="shoppingService.adicionaIngredient(this.receita[0].ingredientes)" >Enviar para a lista de compras</a>
+                    <a [routerLink]="['../',receita[0].nome,'editar']">Editar Receita</a>
                     <a (click)="deletarReceita()" >Deletar Receita</a>
                 </li>
             </ul>
@@ -26,13 +26,13 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <p>{{receita.descricao}}</p>
+        <p>{{receita[0].descricao}}</p>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <ul class="list-group">
-            <li class="list-group-item" *ngFor="let ingrediente of receita.ingredientes" > {{ingrediente.nome}} - {{ingrediente.quantia}}</li>
+            <li class="list-group-item" *ngFor="let ingrediente of receita[0].ingredientes" > {{ingrediente.nome}} - {{ingrediente.quantia}}</li>
         </ul>
     </div>
 </div>

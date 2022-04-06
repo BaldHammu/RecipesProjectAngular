@@ -3,12 +3,15 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/r
 import { Observable } from "rxjs";
 import { ingrediente } from "../shared/ingredientes.model";
 import { RecipeService } from "./Recipe.service";
+import { DataStorageService } from "./data-storage.service";
+import { Recipe } from "../recipes/recipe.model";
+
 @Injectable({providedIn:'root'})
 
-export class receitaResolver implements Resolve<receita>{
-    constructor(private recipeService:RecipeService){}
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): receita | Observable<receita> | Promise<receita> {
-        return this.recipeService.selectReceita(route.params['nome']);
+export class receitaResolver implements Resolve<Recipe[]>{
+    constructor(private dados:DataStorageService){}
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Recipe[] | Observable<Recipe[]> | Promise<Recipe[]> {
+        return this.dados.buscaRecipes();
     }
 }
 interface receita{
