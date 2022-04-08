@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Data, Params, Router } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RecipeService } from 'src/app/services/Recipe.service';
-import { ingrediente } from 'src/app/shared/ingredientes.model';
 import { Recipe } from '../recipe.model';
 
 @Component({

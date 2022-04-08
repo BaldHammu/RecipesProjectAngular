@@ -22,7 +22,6 @@ export class RecipeDetailComponent implements OnInit, OnDestroy{
         this.receita = data[0].filter(res=>{
           return res.nome===decodeURI(this.router.url.split('/')[2]);
         });
-        console.log(this.receita);
       }
     )
   }

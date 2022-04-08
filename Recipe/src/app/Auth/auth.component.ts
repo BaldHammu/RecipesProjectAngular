@@ -44,7 +44,7 @@ export class AuthComponent implements OnInit,OnDestroy{
         obs.subscribe(res =>{
            console.log(res);
             this.isLoading = false;
-            this.router.navigate(['/receitas'])
+            this.router.navigate(['./receitas'])
             }, error=>{
             this.erro = error.error.error.message;
             this.showErrorAlert(error.error.error.message);
@@ -62,6 +62,8 @@ export class AuthComponent implements OnInit,OnDestroy{
         })
     }
     ngOnDestroy(): void {
+        if(this.newSub){
         this.newSub.unsubscribe();
+    }
     }   
 }

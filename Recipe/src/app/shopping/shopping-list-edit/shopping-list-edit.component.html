@@ -1,7 +1,7 @@
 <hr>
 <div class="row">
     <div class="col-md-12">
-        <form (ngSubmit)="onAddIngrediente(f)" #f="ngForm" [formGroup]="form">
+        <form (ngSubmit)="onAddIngrediente()" [formGroup]="form">
             <div class="row">
                 <div class="col-sm-5 form-group">
                     <label for="nome">Nome:</label>
@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="btn-group">
-                            <button class="btn btn-success" style="margin: 5px;" type="submit" [disabled]="!f.valid">{{this.modoEdicao? 'Editar' : 'Adicionar'}}</button>
+                            <button class="btn btn-success" style="margin: 5px;" type="submit" [disabled]="!form.valid">{{this.modoEdicao? 'Editar' : 'Adicionar'}}</button>
                             <button class="btn btn-danger" type="button" style="margin: 5px;" (click)="itemDeleta()">Deletar</button>
                             <button class="btn btn-primary" type="button" style="margin: 5px;" (click)="limpaIngredientes()">Limpar</button>
                         </div>

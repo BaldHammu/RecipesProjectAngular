@@ -2,10 +2,10 @@ import {
   Component,
   OnDestroy,
   OnInit, 
-  ViewChild, } from '@angular/core';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+ } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SubscribeOnObservable } from 'rxjs/internal-compatibility';
 import { ShoppingService } from 'src/app/services/Shopping-List.service';
 import { ingrediente } from 'src/app/shared/ingredientes.model';
 @Component({
@@ -19,7 +19,7 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   modoEdicao = false;
   itemEdicao : number;
-  constructor(private shoppingService:ShoppingService) { }
+  constructor(private shoppingService:ShoppingService, private router:Router) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -39,13 +39,14 @@ export class ShoppingListEditComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-  onAddIngrediente(form : NgForm){
-    this.adiciona= new ingrediente(form.value.nome, form.value.quantia);
+  onAddIngrediente(){
+    this.adiciona= new ingrediente(this.form.value.nome, this.form.value.quantia);
     if(!this.modoEdicao) this.shoppingService.adicionaIngrediente(this.adiciona)  
-    else this.shoppingService.editaIngredientes(this.adiciona,this.itemEdicao);
-    this.modoEdicao = false;
-    form.reset();
- 
+    else{
+      this.shoppingService.editaIngredientes(this.adiciona,this.itemEdicao); 
+      this.router.navigate(['./compras']);
+    }
+    this.form.reset();
   }
   limpaIngredientes(){
     this.form.reset();
