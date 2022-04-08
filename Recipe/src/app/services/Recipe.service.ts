@@ -33,11 +33,8 @@ export class RecipeService{
           this.recipes[0].ingredientes.splice(i,1);
           console.log(this.recipes);
       }
-      editaReceita(receitaOriginal:Recipe,novaReceita:Recipe){
-        const indice = this.recipes.findIndex(x=>x.nome===receitaOriginal.nome);
-        console.log(this.recipes)
-        console.log('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas/'+indice+'.json')
-        this.recipes[indice] = novaReceita;
+      editaReceita(oi:number,receitaEditada){
+        this.recipes[oi]=receitaEditada;
         this.receitasMudaram.next(this.recipes.slice());
       }
       deletarReceita(receita:Recipe){

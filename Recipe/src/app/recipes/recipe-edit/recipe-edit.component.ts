@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { DataStorageService } from 'src/app/services/data-storage.service';
 import { RecipeService } from 'src/app/services/Recipe.service';
 import { Recipe } from '../recipe.model';
 
@@ -13,7 +14,7 @@ import { Recipe } from '../recipe.model';
 export class RecipeEditComponent implements OnInit, OnDestroy {
   receita:Recipe;
   subscription:Subscription
-  constructor(private route:ActivatedRoute, private recipeService:RecipeService, private router:Router) { }
+  constructor(private route:ActivatedRoute, private recipeService:RecipeService, private router:Router, private http:DataStorageService) { }
   editar:boolean = false;
   formReceita : FormGroup;
   ngOnInit(): void {
@@ -69,10 +70,10 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       const novaReceita = new Recipe(this.formReceita.value.nome,
         this.formReceita.value.descricao,
         this.formReceita.value.imagem,
-        this.formReceita.value.ingredientes);
+        this.formReceita.value.ingredientes || [] );
       if (!this.editar)this.recipeService.adicionaReceita(novaReceita)
       else{
-        this.recipeService.editaReceita(this.receita,novaReceita)
+        this.http.editaRecipes(this.receita,novaReceita);
       }
       this.formReceita.reset();
       this.router.navigate(['/receitas']);
@@ -88,5 +89,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     }
     removerIngrediente(i:number){
       (<FormArray>this.formReceita.get('ingredientes')).removeAt(i);
+    }
+    aloha(){
+      
     }
   }  
