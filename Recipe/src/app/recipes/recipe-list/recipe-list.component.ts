@@ -10,20 +10,14 @@ import { Recipe } from '../recipe.model';
   styleUrls: ['./recipe-list.component.scss'],
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
-  subscribe: Subscription;
   recipes: Recipe[];
-  constructor (private dados:DataStorageService) { }
+  constructor (private dados:DataStorageService,private recipeService:RecipeService) { }
   ngOnInit(): void {
-  this.dados.buscaRecipes().subscribe( res =>{
-
-    this.recipes = res;
-  });
-  this.subscribe = this.dados.receitasMudaram
-  .subscribe(res=>{
-    this.recipes = res;
+  this.recipes = this.recipeService.enviaReceitas();
+  this.recipeService.receitasAtualizaram.subscribe(res=>{
+    this.recipes = res
   })
   }
   ngOnDestroy(): void {
-    this.subscribe.unsubscribe();
   }
 }

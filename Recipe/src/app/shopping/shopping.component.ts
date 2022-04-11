@@ -35,4 +35,7 @@ export class ShoppingComponent implements OnInit, OnDestroy {
   editando(){
     this.hakuna = !this.hakuna;
   }
+  impressao(){
+    window.print();
+  }
 }

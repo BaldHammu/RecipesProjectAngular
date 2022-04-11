@@ -1,9 +1,9 @@
 <div class="container">
 <div class="row">
     <div class="col-md-12">
-        <button class="btn btn-primary" [routerLink]="[hakuna? '/compras' : 'editar']" (click)="editando()">Adicionar Ingredientes</button>
+        <button class="btn btn-primary noprint" [routerLink]="[hakuna? '/compras' : 'editar']" (click)="editando()">Adicionar Ingredientes</button>
         <router-outlet></router-outlet> 
-        <hr>
+        <hr class="noprint">
         <ul class="list-group">
             <a class="list-group-item" 
             style="cursor: pointer;"
@@ -12,6 +12,7 @@
             {{ingrediente.nome}} ({{ingrediente.quantia}})
         </a>
         </ul>
+    <button (click)="impressao()" class="btn btn-info noprint">Imprimir Lista de compras</button>
     </div>
 </div>
 </div>

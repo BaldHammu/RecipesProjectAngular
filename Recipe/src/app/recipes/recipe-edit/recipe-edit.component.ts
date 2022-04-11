@@ -53,7 +53,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
           receitaIngredientes.push(
             new FormGroup({
               'nome': new FormControl(ingrediente.nome,Validators.required),
-              'quantia': new FormControl(ingrediente.quantia,[Validators.required,Validators.pattern(/^[1-9]+[0-9]*$/)]),
+              'quantia': new FormControl(ingrediente.quantia,Validators.required),
             })
           );
         }
@@ -93,8 +93,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     adicionarIngrediente(){
       (<FormArray>this.formReceita.get('ingredientes')).push(
         new FormGroup({
-          'nome': new FormControl(null,Validators.required),
-          'quantia': new FormControl(null,[Validators.pattern(/^[1-9]+[0-9]*$/), Validators.required]),
+          'nome': new FormControl(null, Validators.required),
+          'quantia': new FormControl(null, Validators.required),
         })
       );
     }

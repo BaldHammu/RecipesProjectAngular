@@ -14,18 +14,6 @@ export class DataStorageService {
     check = false;
     constructor(private http: HttpClient) { }
     storeRecipes(receita) {
-        this.http.get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json')
-        .pipe(tap(res=>{
-            const DBarray = Object.values(res);
-            for (let r in DBarray){
-                if(receita.nome === DBarray[r].nome){
-                    this.check = true;
-                    console.log(this.check);
-                    alert('Receita duplicada');
-                    return
-                };
-            }
-            if (!this.check){
                 this.http
                     .post('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json',receita)
                     .subscribe();
@@ -33,10 +21,9 @@ export class DataStorageService {
                 this.http.get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json')
                 .pipe(tap(res=> this.receitasMudaram.next(res)))
                 .subscribe();
-                },500)}
+                },500)
             }
-        )).subscribe();
-    }
+    
     buscaRecipes() {
         return this.http
             .get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json');
