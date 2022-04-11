@@ -8,10 +8,12 @@ import { Recipe } from '../../recipe.model';
 })
 export class RecipeItemComponent implements OnInit {
   @Input() recipe: Recipe;
-  
+  trataRecipes: any;
   constructor(public RecipeService:RecipeService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.trataRecipes = Object.values(this.recipe)[1];
+  }
 
 
 }

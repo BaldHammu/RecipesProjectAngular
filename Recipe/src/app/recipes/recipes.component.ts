@@ -1,4 +1,5 @@
 import { Component, OnInit, } from '@angular/core';
+import { DataStorageService } from '../services/data-storage.service';
 import { Recipe } from './recipe.model';
 
 @Component({
@@ -8,8 +9,9 @@ import { Recipe } from './recipe.model';
 })
 export class RecipesComponent implements OnInit {
   receitaSelecionada:Recipe;
-  constructor() { }
+  constructor(private data:DataStorageService) { }
 
   ngOnInit(): void {
+    this.data.buscaRecipes().subscribe();
   }
 }

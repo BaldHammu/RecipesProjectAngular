@@ -16,7 +16,7 @@
                 Gerenciar receitas <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a (click)="shoppingService.adicionaIngredient(this.receita[0].ingredientes)" >Enviar para a lista de compras</a>
+                <li><a (click)="shoppingService.adicionaIngredient(receita[0].ingredientes)">Enviar para a lista de compras</a>
                     <a [routerLink]="['../',receita[0].nome,'editar']">Editar Receita</a>
                     <a (click)="deletarReceita()" >Deletar Receita</a>
                 </li>

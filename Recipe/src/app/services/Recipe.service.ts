@@ -1,51 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs/Subject";
-import { Recipe } from "../recipes/recipe.model";
+
 
 
 @Injectable({providedIn:'root'})
 
-export class RecipeService{
-    receitasMudaram = new Subject<Recipe[]>();
-    duplicado = false;
-   private recipes: Recipe[]=[];
-   temBolo = false;
-      getRecipes(){
-          return this.recipes.slice()
-      }
-      selectReceita(nome:string){
-          const receita = this.recipes.find((r)=>{return r.nome === nome});
-          return receita;
-      }
-      adicionaReceita(something:Recipe){
-          for (let receitas in this.recipes){
-              if(something.nome === this.recipes[receitas].nome){
-                  alert('Nome Duplicado!');
-                  this.duplicado=true;
-              }
-          }
-          if (this.duplicado===false){
-          this.recipes.push(something);
-          this.receitasMudaram.next(this.recipes.slice());}
-          this.duplicado=false;
-      }
-      removerIngrediente(i){
-          this.recipes[0].ingredientes.splice(i,1);
-          console.log(this.recipes);
-      }
-      editaReceita(oi:number,receitaEditada){
-        this.recipes[oi]=receitaEditada;
-        this.receitasMudaram.next(this.recipes.slice());
-      }
-      deletarReceita(receita:Recipe){
-          const indice = this.recipes.indexOf(receita);
-          this.recipes.splice(indice,1);
-          this.receitasMudaram.next(this.recipes.slice());
-      }
-      insereReceitas(receitas:Recipe[]){
-          this.temBolo = true;
-          this.recipes = receitas;
-          this.receitasMudaram.next(this.recipes.slice());
-      }
-
-}
+export class RecipeService{}

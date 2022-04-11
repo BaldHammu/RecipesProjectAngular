@@ -16,13 +16,6 @@
             <li (click)="onLogout()">
                 <a style="cursor: pointer;" *ngIf="isAuth">Logout</a>
             </li>
-            <li class="dropdown" appDropdown *ngIf="isAuth">
-                <a class="dropdown-toggle" role="button">Gerenciar <span class="caret"></span></a>
-                <ul class="dropdown-menu" app-dropdown>
-                    <li><a (click)="enviarReceitas()">Salvar dados</a></li>
-                    <li><a (click)="getReceitas()">Buscar dados</a></li>
-                </ul>
-            </li>
         </ul>
         </div>
     </div>

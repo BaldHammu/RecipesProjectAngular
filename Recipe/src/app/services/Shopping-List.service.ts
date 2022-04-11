@@ -21,8 +21,9 @@ export class ShoppingService{
         return this.ingredientes.slice()
 }
     adicionaIngredient(Ingredientes:ingrediente[]){
+        if (Ingredientes){
         this.ingredientes.push(...Ingredientes);
-        this.adicionaIngredientes.next(this.ingredientes.slice())
+        this.adicionaIngredientes.next(this.ingredientes.slice())}
     }
     editaIngredientes(ingrediente:ingrediente, index:number){
         this.ingredientes[index] = ingrediente;

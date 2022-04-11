@@ -1,46 +1,60 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Recipe } from "../recipes/recipe.model";
-import { RecipeService } from "./Recipe.service";
-import { map, tap } from 'rxjs/operators';
-import { AuthService } from "./Auth/auth.service";
+import {tap } from 'rxjs/operators';
+import { Subject } from "rxjs";
+
 
 
 @Injectable({ providedIn: 'root' })
 
 export class DataStorageService {
+    receitasMudaram= new Subject<Recipe[]>();
     receitas: Recipe[];
-    constructor(private http: HttpClient, private recipesService: RecipeService, private auth: AuthService) { }
-    storeRecipes() {
-        this.receitas = this.recipesService.getRecipes();
-        this.http
-            .put('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json', this.receitas)
-            .subscribe((res) => {
-                console.log(res);
-            });
+    check = false;
+    constructor(private http: HttpClient) { }
+    storeRecipes(receita) {
+        this.http.get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json')
+        .pipe(tap(res=>{
+            const DBarray = Object.values(res);
+            for (let r in DBarray){
+                if(receita.nome === DBarray[r].nome){
+                    this.check = true;
+                    console.log(this.check);
+                    alert('Receita duplicada');
+                    return
+                };
+            }
+            if (!this.check){
+                this.http
+                    .post('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json',receita)
+                    .subscribe();
+                setTimeout(()=>{
+                this.http.get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json')
+                .pipe(tap(res=> this.receitasMudaram.next(res)))
+                .subscribe();
+                },500)}
+            }
+        )).subscribe();
     }
     buscaRecipes() {
         return this.http
-            .get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json').pipe(
-                map(res => {
-                    return res.map(res => {
-                        return { ...res, ingredientes: res.ingredientes ? res.ingredientes : [] }
-                    });
-                }), tap(res => {
-                    this.recipesService.insereReceitas(res);
-                }));
+            .get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json');
     }
-    editaRecipes(OGRecipe,receita:Recipe) {
-        this.http
-            .get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json').pipe(
-                map(res => {
-                    return res.findIndex(res=>{
-                        return res.nome=== OGRecipe[0].nome }
-                    );
-                }), tap(res => {
-                    this.http.put<Recipe>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas/'+res+'.json',receita).subscribe()
-                    this.recipesService.editaReceita(res,receita);
-                })).subscribe(res =>{
-                });
+    editaRecipes(editKey:string,receita:Recipe) {
+            this.http.put<Recipe>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas/'+editKey+'.json',receita).subscribe()
+            setTimeout(()=>{
+                this.http.get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json')
+                .pipe(tap(res=> this.receitasMudaram.next(res)))
+                .subscribe();
+                },500)
     }
+    deletarRecipe(editKey:string){
+                    this.http.delete<Recipe>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas/'+editKey+'.json').subscribe();
+                    setTimeout(()=>{
+                        this.http.get<Recipe[]>('https://ng-recipes-backend-75ba3-default-rtdb.firebaseio.com/receitas.json')
+                        .pipe(tap(res=> this.receitasMudaram.next(res)))
+                        .subscribe();
+                        },500)
+                }
 }

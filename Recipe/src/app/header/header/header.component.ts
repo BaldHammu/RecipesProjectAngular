@@ -26,9 +26,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   selecionaMenu(item:string){
     this.menuItem.emit(item);
   }
-   enviarReceitas(){
-     this.envia.storeRecipes();
-   }
    getReceitas(){
      this.envia.buscaRecipes().subscribe();
    }

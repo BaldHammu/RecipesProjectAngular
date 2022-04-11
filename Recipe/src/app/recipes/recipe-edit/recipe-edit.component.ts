@@ -12,22 +12,31 @@ import { Recipe } from '../recipe.model';
   styleUrls: ['./recipe-edit.component.scss']
 })
 export class RecipeEditComponent implements OnInit, OnDestroy {
-  receita:Recipe;
+  receita:Recipe[];
   subscription:Subscription
-  constructor(private route:ActivatedRoute, private recipeService:RecipeService, private router:Router, private http:DataStorageService) { }
+  constructor(private route:ActivatedRoute, private router:Router, private http:DataStorageService) { }
   editar:boolean = false;
   formReceita : FormGroup;
+  certainIndex:number;
+  editKey:string;
   ngOnInit(): void {
     this.editar = this.router.url.split('/')[2] != 'nova';
     if (this.editar){
     this.subscription = this.route.data
     .subscribe(
       (data:Data)=>{
-        this.receita = data[0].filter(res=>{
+        const tratamentoInicial: Recipe[]= Object.values(data[0]);
+        this.receita = tratamentoInicial.filter(res=>{
           return res.nome===decodeURI(this.router.url.split('/')[2]);
         });
+        this.certainIndex = tratamentoInicial.findIndex(res=>{
+          return res.nome === decodeURI(this.router.url.split('/')[2]);
+
+        });
+        this.editKey=Object.getOwnPropertyNames(data[0])[this.certainIndex];
       }
-    );}
+    );
+  }
     this.initForm();
     }
   private initForm(){
@@ -70,10 +79,12 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       const novaReceita = new Recipe(this.formReceita.value.nome,
         this.formReceita.value.descricao,
         this.formReceita.value.imagem,
-        this.formReceita.value.ingredientes || [] );
-      if (!this.editar)this.recipeService.adicionaReceita(novaReceita)
+        this.formReceita.value.ingredientes);
+      if (!this.editar){
+        this.http.storeRecipes(novaReceita);
+      }
       else{
-        this.http.editaRecipes(this.receita,novaReceita);
+        this.http.editaRecipes(this.editKey,novaReceita);
       }
       this.formReceita.reset();
       this.router.navigate(['/receitas']);
@@ -89,8 +100,5 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     }
     removerIngrediente(i:number){
       (<FormArray>this.formReceita.get('ingredientes')).removeAt(i);
-    }
-    aloha(){
-      
     }
   }  
